@@ -1,6 +1,6 @@
 # Nub
 
-**Semantic compression for AI agents. Any content, any size, fit to a budget.**
+**Structure-aware compression for AI agents. Any content, any size, fit to a budget.**
 
 Agents have to work through large, messy artifacts: entire repositories, long logs, chat sessions, and sprawling codebases. But their context windows are limited. Chunking for retrieval breaks structure. Head-and-tail summaries strip away meaning. What's left is often fragments without a sense of how they fit together.
 

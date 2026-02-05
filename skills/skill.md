@@ -2,12 +2,12 @@
 name: nub
 description: >
   Use when exploring content too large for normal tools: files >10K chars,
-  folders with many files, large logs, codebases. Teaches semantic zoom
+  folders with many files, large logs, codebases. Teaches LoD (level of detail)
   patterns for progressive navigation.
 argument-hint: [file-or-folder]
 ---
 
-# Nub: Semantic Zoom for Large Content
+# Nub: Level-of-Detail for Large Content
 
 Nub compresses content while preserving structure. Think telescope for code - adjust magnification to see landscape (overview) or details (zoomed).
 

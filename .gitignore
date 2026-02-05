@@ -1,0 +1,36 @@
+# Distribution artifact (generated)
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Research data and archives (large)
+research/
+archive/
+data/
+old.git/
+
+# Agent workspace
+.agent/
+.claude/
+
+# Release (standalone repo, own .git)
+release/

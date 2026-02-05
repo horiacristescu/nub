@@ -1,0 +1,7 @@
+First line of the file
+Second line with some content
+Third line in the middle
+Fourth line also middle
+Fifth line getting closer to end
+Sixth line almost there
+Seventh and final line

@@ -1,0 +1,12 @@
+2024-01-15 10:00:00 INFO Starting application
+2024-01-15 10:00:01 DEBUG Loading configuration
+2024-01-15 10:00:02 INFO Configuration loaded successfully
+2024-01-15 10:00:03 DEBUG Connecting to database
+2024-01-15 10:00:04 INFO Database connection established
+2024-01-15 10:00:05 DEBUG Processing request id=12345
+2024-01-15 10:00:06 WARNING High memory usage detected: 85%
+2024-01-15 10:00:07 ERROR Failed to process request: timeout
+2024-01-15 10:00:08 DEBUG Retrying request id=12345
+2024-01-15 10:00:09 INFO Request processed successfully
+2024-01-15 10:00:10 DEBUG Cleanup completed
+2024-01-15 10:00:11 INFO Application shutdown

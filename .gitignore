@@ -34,3 +34,4 @@ old.git/
 
 # Release (standalone repo, own .git)
 release/
+.DS_Store

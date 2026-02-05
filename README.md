@@ -49,6 +49,70 @@ Nub parses content into a tree, scores each node by position, topology, and opti
 
 No matter how big the input is, the structure comes through. A 50,000 line codebase and a 200 line script both fit into the same 10KB window. What gets cut is the body text, not the landmarks you need to navigate.
 
+### U-curve sampling
+
+Within each node, lines near the start and end get more budget than lines in the middle. The intuition: openings establish context (function signatures, imports, class declarations) and endings carry results (return values, summaries). The middle is where the routine work lives.
+
+```
+  budget
+  per line
+    │                                  │
+    █                                  █
+    █░                                ░█
+    ██░                              ░██
+    ███░                            ░███
+    ████░░                        ░░████
+    ██████░░░░   ░░░░░░░     ░░░░░██████
+    ████████████████████████████████████
+    ┼──────────────────────────────────┼
+    start            middle          end
+```
+
+When budget is tight, the middle folds into a marker like `[...14 more lines...]` while the start and end stay readable.
+
+### Staged degradation
+
+The same Python function at four compression levels:
+
+```
+Focus (1:1)              Regional (10:1)          Overview (100:1)
+
+def compress_tree(       def compress_tree(       compress_tree
+    root: Node,              root: Node,
+    budget: int,             budget: int,
+    grep: str | None,        ...
+) -> list[OutputLine]:   ) -> list[OutputLine]:
+    """Compress a tree        """Compress a tree
+    hierarchically."""        hierarchically."""
+    scores = rank(root)
+    alloc = softmax(scores)
+    for node in root:
+        ...
+    return lines
+```
+
+Budget pressure pushes nodes down through these levels. High-scoring nodes (grep matches, structurally important code) stay detailed while low-scoring ones degrade first.
+
+### Grep boosting
+
+When you pass `--grep "pattern"`, matching lines get a score boost that pulls budget toward them. The rest of the file still appears, but compressed harder to make room.
+
+```
+  without grep             with --grep "auth"
+
+  ░░ import os             ░ import os
+  ░░ import sys            ░ import sys
+  ░░ class Server:         ░ class Server:
+  ░░   def start():        ░   def start(): ...
+  ░░   def stop():         ░   def stop(): ...
+  ░░   def auth():         ██  def auth(self, token):
+  ░░   def log():          ██    if not verify(token):
+  ░░                       ██      raise AuthError
+                           ░   def log(): ...
+```
+
+The file isn't filtered, it's rebalanced. You still see where `auth` sits in the class, but now you can read its implementation.
+
 ## Examples
 
 **Browse a folder** — each file gets a content preview and size:
@@ -66,18 +130,6 @@ nub/
   core.py - """ Core compression algorithm for Nub. Implements...
   dom.py - """ DOM - Document Object Model for Nub... [2.3 KB]
   profiler.py - """ File profiler - detect state features... [13.7 KB]
-```
-
-**Grep boost** — matching lines float to the top of the budget:
-
-```
-$ nub src/nub/core.py -s 60:6 -g "def compress"
-1: [8 imports, lines 1...
-386: compress_tree
-545: deduplicate_3grams
-298: _merge_fold_markers
-347: _enforce_budget
-150: truncate_content
 ```
 
 **Zoom into a region** — drill from overview to full source:
@@ -158,6 +210,19 @@ Nub detects content type and applies format-specific compression:
 | Folder | Directory path | File tree with content previews and sizes |
 | MindMap | `[N]` node syntax | Node references ranked by connectivity |
 | Text | Fallback | Section boundaries, positional U-curve (start/end priority) |
+
+## Claude Code skill
+
+Nub ships with a skill file that teaches Claude Code how to use it. Copy `skills/skill.md` to your Claude Code skills directory and the agent will know when and how to reach for nub instead of truncating with `head` or stuffing the full file into context.
+
+```bash
+# Install the skill
+cp skills/skill.md ~/.claude/skills/nub.md
+
+# Now Claude Code will use nub for large files, folders, and codebases
+```
+
+The skill covers shape selection, the zoom workflow, grep boosting, deduplication, and when not to use nub. There's also `skills/jsonl.md` with patterns for exploring large JSONL files using jq + nub together.
 
 ## Status
 

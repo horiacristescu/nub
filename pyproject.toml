@@ -29,11 +29,28 @@ Repository = "https://github.com/horiacristescu/nub"
 nub = "nub.cli:main"
 
 [project.optional-dependencies]
+tree-sitter = [
+    "tree-sitter>=0.24",
+    "tree-sitter-c",
+    "tree-sitter-c-sharp",
+    "tree-sitter-cpp",
+    "tree-sitter-go",
+    "tree-sitter-java",
+    "tree-sitter-javascript",
+    "tree-sitter-kotlin",
+    "tree-sitter-php",
+    "tree-sitter-ruby",
+    "tree-sitter-rust",
+    "tree-sitter-sql",
+    "tree-sitter-swift",
+    "tree-sitter-typescript",
+]
 dev = [
     "pytest",
     "pytest-cov",
     "ruff",
     "pyright",
+    "nub[tree-sitter]",
 ]
 
 [build-system]

@@ -25,6 +25,7 @@ from .formats import (
     python as _python,  # noqa: F401 - ensure python format is registered
 )
 from .formats import text as _text  # noqa: F401 - ensure text format is registered
+from .formats import treesitter as _treesitter  # noqa: F401 - ensure tree-sitter formats registered
 from .formats.base import FormatStrategy, registry
 from .formats.folder import FolderStrategy
 from .formats.text import CustomSeparatorStrategy
@@ -672,8 +673,12 @@ def main(args: list[str] | None = None) -> int:
     is_structured_format = False
     if filename:
         ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
-        # Structured formats that need raw content (AST-based parsing)
-        is_structured_format = ext in ("py", "pyw", "json", "yaml", "yml", "toml")
+        is_structured_format = (
+            ext in ("py", "pyw", "json", "yaml", "yml", "toml")
+            or _treesitter.is_registered(ext)
+        )
+    if parsed.format_type:
+        is_structured_format = is_structured_format or _treesitter.is_registered(parsed.format_type)
 
     if not is_structured_format:
         if parsed.wrap and not using_separator:

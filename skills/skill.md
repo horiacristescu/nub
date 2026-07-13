@@ -4,7 +4,7 @@ description: >
   Use when exploring content too large for normal tools: files >10K chars,
   folders with many files, large logs, codebases. Teaches LoD (level of detail)
   patterns for progressive navigation.
-argument-hint: [file-or-folder]
+argument-hint: "[file-or-folder]"
 ---
 
 # Nub: Level-of-Detail for Large Content
